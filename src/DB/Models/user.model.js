@@ -10,7 +10,9 @@ const userSchema = new mongoose.Schema({
         required: true
     }
 }, {
-    collection:"Users"
+    collection:"Users",
+    strict: false,
+    timestamps: true,
 })
 
 export const UserModel = mongoose.model("User", userSchema)

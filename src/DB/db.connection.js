@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 import { DB_URI } from "../../config/config.service.js";
 
 export const authenticateDB = async() => {
