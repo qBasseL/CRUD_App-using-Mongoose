@@ -27,7 +27,7 @@ const bootstrap = async() => {
     })
 
     app.listen(PORT, () => {
-        console.log(`Server is Runngng on port ${PORT}`);
+        console.log(`Server is Running on port ${PORT}`);
     })
 
 }

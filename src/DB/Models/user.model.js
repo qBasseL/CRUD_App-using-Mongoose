@@ -3,16 +3,42 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true
+        required: [true, "Name is required field"],
+        minLength: [2, "Name Should Contain More Than 2 Characters"],
+        maxLength: [25, "Name Should Contain Less Than 25 Characters"],
+        validate: {
+            validator: function (value) {
+                if (value === 'admin' || value === 'system') {
+                    return false
+                }
+                return true
+            },
+            message: function (prop) {
+                return `This username is not allowed value = ${prop.value}`
+            }
+        }
+    },
+    email: {
+        type: String,
+        required: [true, "Email is required field"],
+        unique: [true, "You Cannot Register With The Same Email Twice"]
+    },
+    gender: {
+        type: String,
+        enum: {values: ['male', 'female'], message: "Only Male or Female are allowed"},
+        default: 'male',
+        required: [true, "You Must Enter Your Gender"],
+        lowercase: true
     },
     age: {
         type: Number,
-        required: true
+        required: [true, "Age is required field"]
     }
 }, {
     collection:"Users",
     strict: false,
     timestamps: true,
+    autoIndex: true
 })
 
-export const UserModel = mongoose.model("User", userSchema)
+export const UserModel = mongoose.models.User || mongoose.model("User", userSchema)
