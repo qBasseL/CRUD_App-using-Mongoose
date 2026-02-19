@@ -4,7 +4,7 @@ import { UserModel } from "./Models/user.model.js";
 
 export const authenticateDB = async() => {
     try {
-        const databaseConnection = await mongoose.connect(DB_URI)
+        const databaseConnection = await mongoose.connect(DB_URI, {serverSelectionTimeoutMS: 2000})
         // console.log(databaseConnection);
         await UserModel.syncIndexes()   
         console.log(`Database Connected Successfully`);
@@ -12,3 +12,5 @@ export const authenticateDB = async() => {
         console.error(`Couldn't Connet To Database`, err)
     }
 }
+
+

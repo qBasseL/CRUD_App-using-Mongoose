@@ -1,44 +1,78 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     firstName: {
-        type: String,
-        required: [true, "Name is required field"],
-        minLength: [2, "Name Should Contain More Than 2 Characters"],
-        maxLength: [25, "Name Should Contain Less Than 25 Characters"],
-        validate: {
-            validator: function (value) {
-                if (value === 'admin' || value === 'system') {
-                    return false
-                }
-                return true
-            },
-            message: function (prop) {
-                return `This username is not allowed value = ${prop.value}`
-            }
-        }
+      type: String,
+      required: [true, "Name is required field"],
+      minLength: [2, "Name Should Contain More Than 2 Characters"],
+      maxLength: [25, "Name Should Contain Less Than 25 Characters"],
+      validate: {
+        validator: function (value) {
+          if (value === "admin" || value === "system") {
+            return false;
+          }
+          return true;
+        },
+        message: function (prop) {
+          return `This username is not allowed value = ${prop.value}`;
+        },
+      },
+    },
+    lastName: {
+      type: String,
+      required: [true, "Name is required field"],
+      minLength: [2, "Name Should Contain More Than 2 Characters"],
+      maxLength: [25, "Name Should Contain Less Than 25 Characters"],
+      validate: {
+        validator: function (value) {
+          if (value === "admin" || value === "system") {
+            return false;
+          }
+          return true;
+        },
+        message: function (prop) {
+          return `This username is not allowed value = ${prop.value}`;
+        },
+      },
     },
     email: {
-        type: String,
-        required: [true, "Email is required field"],
-        unique: [true, "You Cannot Register With The Same Email Twice"]
+      type: String,
+      required: [true, "Email is required field"],
+      unique: [true, "You Cannot Register With The Same Email Twice"],
     },
     gender: {
-        type: String,
-        enum: {values: ['male', 'female'], message: "Only Male or Female are allowed"},
-        default: 'male',
-        required: [true, "You Must Enter Your Gender"],
-        lowercase: true
+      type: String,
+      enum: {
+        values: ["male", "female"],
+        message: "Only Male or Female are allowed",
+      },
+      default: "male",
+      required: [true, "You Must Enter Your Gender"],
+      lowercase: true,
     },
     age: {
-        type: Number,
-        required: [true, "Age is required field"]
-    }
-}, {
-    collection:"Users",
+      type: Number,
+      required: [true, "Age is required field"],
+    },
+  },
+  {
+    collection: "Users",
     strict: false,
     timestamps: true,
-    autoIndex: true
-})
+    autoIndex: true,
+    strictQuery: true,
+    optimisticConcurrency: true,
+    toJSON: { virtuals: true },
+  },
+);
 
-export const UserModel = mongoose.models.User || mongoose.model("User", userSchema)
+userSchema.virtual("fullName").set(function (value) {
+    const [firstName, lastName] = value.split(" ");
+    this.set({ firstName: firstName, lastName: lastName });
+  }).get(function () {
+    return this.firstName + " " + this.lastName;
+  });
+
+export const UserModel =
+  mongoose.models.User || mongoose.model("User", userSchema);
