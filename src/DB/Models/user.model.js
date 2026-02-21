@@ -51,6 +51,9 @@ const userSchema = new mongoose.Schema(
       required: [true, "You Must Enter Your Gender"],
       lowercase: true,
     },
+    wishlist: {
+      type: [String]
+    },
     age: {
       type: Number,
       required: [true, "Age is required field"],
@@ -60,12 +63,14 @@ const userSchema = new mongoose.Schema(
   },
   {
     collection: "Users",
-    strict: true,
+    strict: false,
     timestamps: true,
     autoIndex: true,
     strictQuery: true,
     optimisticConcurrency: true,
     toJSON: { virtuals: true },
+    toObject: {virtuals: true},
+    strictPopulate: false
   },
 );
 
@@ -75,6 +80,12 @@ userSchema.virtual("fullName").set(function (value) {
   }).get(function () {
     return this.firstName + " " + this.lastName;
   });
+
+userSchema.virtual('product', {
+  localField:'_id',
+  foreignField:"createdBy",
+  ref:'Product'
+})
 
 export const UserModel =
   mongoose.models.User || mongoose.model("User", userSchema);
