@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { GenderEnums } from "../../Common/enums/index.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -44,10 +45,10 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       enum: {
-        values: ["male", "female"],
+        values: Object.values(GenderEnums),
         message: "Only Male or Female are allowed",
       },
-      default: "male",
+      default: GenderEnums.Male,
       required: [true, "You Must Enter Your Gender"],
       lowercase: true,
     },

@@ -5,7 +5,7 @@ export const addProduct = async (data) => {
   const { name, price, createdBy } = data;
   const user = await UserModel.findById(createdBy);
   if (!user) {
-    throw new Error(`Couldn't Find That User`, { cause: { status: 404 } });
+    return errorException({message:"Couldn't Find That User", status:404})
   }
   const product = await ProductModel.insertOne({
     name: name,
