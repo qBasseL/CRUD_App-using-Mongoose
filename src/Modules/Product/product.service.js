@@ -1,4 +1,5 @@
 import { ProductModel, UserModel } from "../../DB/Models/index.js";
+import { errorException } from "../../Common/utils/index.js";
 
 export const addProduct = async (data) => {
   const { name, price, createdBy } = data;
