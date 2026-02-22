@@ -11,6 +11,6 @@ export const authenticateDB = async () => {
     await UserModel.syncIndexes();
     console.log(`Database Connected Successfully`);
   } catch (err) {
-    console.error(`Couldn't Connet To Database`, err);
+    console.error(`Couldn't Connect To Database`, err);
   }
 };
